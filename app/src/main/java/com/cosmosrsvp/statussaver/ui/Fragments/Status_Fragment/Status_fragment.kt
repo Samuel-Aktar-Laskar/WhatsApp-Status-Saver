@@ -3,6 +3,7 @@ package com.cosmosrsvp.statussaver.ui.Fragments.Status_Fragment
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +15,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.cosmosrsvp.statussaver.ui.component.statusCard
-import java.io.File
 
 class Status_fragment : Fragment() {
     val TAG: String= "StatusFragmentTag"
@@ -56,8 +57,9 @@ class Status_fragment : Fragment() {
                                     cells =GridCells.Fixed(2) ,
                                     content = {
                                         itemsIndexed(
-                                            items = viewModel.mediaFileList.value
+                                            items = viewModel.mediaFileListInWhatsAppDir.value,
                                         ){index, item->
+                                            Log.d(TAG,"Index value: $index and isDownloaded : ${item.isDownloaded}")
                                             statusCard(
                                                 model =item,
                                                 onDownlaodClicked = {file->

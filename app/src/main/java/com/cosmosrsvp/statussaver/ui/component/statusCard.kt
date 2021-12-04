@@ -61,24 +61,17 @@ fun statusCard(
                 .align(Alignment.BottomCenter),
             verticalAlignment = Alignment.Bottom,
         ) {
-            val downloadIcon= Icon(
-                painter = painterResource(id = R.drawable.icon_download),
-                contentDescription =null,
-                tint = Color.White
-            )
-            val downloadedIcon= Icon(
-                painter = painterResource(id = R.drawable.ic_downloaded),
-                contentDescription =null,
-                tint = Color(0xFF004102)
-            )
             IconButton(
-                onClick = { onDownlaodClicked(model.mediaFile) }
+                onClick = {
+                    if (!model.isDownloaded)
+                    onDownlaodClicked(model.mediaFile)
+                }
             ) {
-               if (model.isDownloaded)
-                   downloadedIcon
-                else
-                    downloadIcon
-
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_download),
+                    contentDescription =null,
+                    tint = downloadIconColor(model.isDownloaded)
+                )
             }
             IconButton(
                 onClick = { onShareClicked(model.mediaFile) }
@@ -96,7 +89,14 @@ fun statusCard(
 
 }
 
-
+fun downloadIconColor(isDownloaded: Boolean): Color{
+    if (isDownloaded){
+        return Color.LightGray
+    }
+    else{
+        return Color.White
+    }
+}
 
 @Composable
 fun CircularImageViewDemo(bitmap: Bitmap) {
