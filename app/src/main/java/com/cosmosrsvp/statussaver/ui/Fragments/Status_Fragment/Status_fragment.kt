@@ -26,7 +26,7 @@ import com.cosmosrsvp.statussaver.ui.component.statusCard
 class Status_fragment : Fragment() {
     val TAG: String= "StatusFragmentTag"
     val viewModel: Satus_Fragment_ViewModel by viewModels()
-    @ExperimentalFoundationApi
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +60,7 @@ class Status_fragment : Fragment() {
                                             items = viewModel.mediaFileListInWhatsAppDir.value,
                                         ){index, item->
                                             Log.d(TAG,"Index value: $index and isDownloaded : ${item.isDownloaded}")
+                                            Log.d(TAG,"In read  Index value: $index and isDownloaded : ${viewModel.mediaFileListInWhatsAppDir.value.get(index).isDownloaded}")
                                             statusCard(
                                                 model =item,
                                                 onDownlaodClicked = {file->

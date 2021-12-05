@@ -33,13 +33,12 @@ fun statusCard(
         Column(
         ) {
             if (model.isVideo){
-                val bMap = model.mediaFile?.let {
+                model.mediaFile?.let {
                     ThumbnailUtils.createVideoThumbnail(
                         it.getAbsolutePath(),
                         MediaStore.Video.Thumbnails.MICRO_KIND
                     )
-                }
-                bMap?.let {
+                }?.let {
                     CircularImageViewDemo(bitmap = it)
                 }
 
@@ -83,7 +82,6 @@ fun statusCard(
                 )
             }
         }
-
     }
 
 
@@ -91,7 +89,7 @@ fun statusCard(
 
 fun downloadIconColor(isDownloaded: Boolean): Color{
     if (isDownloaded){
-        return Color.LightGray
+        return Color(0xFF838383)
     }
     else{
         return Color.White
@@ -115,7 +113,6 @@ fun CircularImageViewDemo(bitmap: Bitmap) {
                 // add a border (optional)
                 .height(350.dp)
                 .border(width = 1.dp, color = Color.White)
-
         )
     }
 }

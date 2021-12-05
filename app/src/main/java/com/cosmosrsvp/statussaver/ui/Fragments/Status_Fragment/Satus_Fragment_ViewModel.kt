@@ -15,8 +15,8 @@ class Satus_Fragment_ViewModel
 
     val TAG= "statusFragmentViewModel"
     val isPermissionGranted: MutableState<Boolean> = mutableStateOf(false)
-    val mediaFileListInWhatsAppDir: MutableState<MutableList<StatusModel>> = mutableStateOf(mutableListOf())
-    val mediaFileListInAppDir: MutableState<MutableList<File>> = mutableStateOf(mutableListOf())
+    var mediaFileListInWhatsAppDir: MutableState<List<StatusModel>> = mutableStateOf(listOf())
+    var mediaFileListInAppDir: MutableState<MutableList<File>> = mutableStateOf(mutableListOf())
     private val storageDir: File=Environment.getExternalStorageDirectory()
     private val appDir: File= File(storageDir, "Status_Saver_With_Video_Downloader")
     init {
@@ -42,6 +42,8 @@ class Satus_Fragment_ViewModel
 
     fun refreshWhatsAppMediaFilelist(){
         val whatsAppStatusFile= File(storageDir,"WhatsApp/Media/.Statuses")
+        val tempList: MutableList<StatusModel> = mutableListOf()
+        Log.d(TAG, "Refreshing whatsapp status dir")
         whatsAppStatusFile.listFiles()?.let { statusDirectoryFiles->
             for (file in statusDirectoryFiles ){
                 var statusModel: StatusModel?=null
@@ -51,7 +53,6 @@ class Satus_Fragment_ViewModel
                                 isVideo = false,
                                 isDownloaded = mediaFileListInAppDir.value.hasFile(File(appDir, file.name))
                     )
-
                 }
                 else if (isVideo(file.absolutePath)){
                     statusModel= StatusModel(
@@ -61,14 +62,11 @@ class Satus_Fragment_ViewModel
                     )
                 }
                 statusModel?.let {
-                    if (!mediaFileListInWhatsAppDir.value.hasModel(it))
-                        mediaFileListInWhatsAppDir.value.add(statusModel)
+                    tempList.add(statusModel)
                 }
             }
-
-
-
         }
+        mediaFileListInWhatsAppDir.value=tempList
     }
 
     fun isVideo(absPath: String): Boolean{
@@ -111,14 +109,6 @@ class Satus_Fragment_ViewModel
 
     }
 
-    fun List<StatusModel>.hasModel(reqModel: StatusModel): Boolean{
-        for(model in this){
-            if (model.equals(reqModel)){
-                return true
-            }
-        }
-        return false
-    }
     fun List<File>.hasFile(file: File): Boolean{
         for(content in this){
             if (content.equals(file))
@@ -126,6 +116,4 @@ class Satus_Fragment_ViewModel
         }
         return false
     }
-
-
 }
