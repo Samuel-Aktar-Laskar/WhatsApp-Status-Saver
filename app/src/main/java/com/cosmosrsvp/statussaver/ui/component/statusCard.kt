@@ -19,7 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.cosmosrsvp.statussaver.R
+import com.skydoves.landscapist.glide.GlideImage
 import java.io.File
 
 
@@ -33,22 +36,29 @@ fun statusCard(
         Column(
         ) {
             if (model.isVideo){
-                model.mediaFile?.let {
+                /*model.mediaFile?.let {
                     ThumbnailUtils.createVideoThumbnail(
                         it.getAbsolutePath(),
                         MediaStore.Video.Thumbnails.MICRO_KIND
                     )
                 }?.let {
                     CircularImageViewDemo(bitmap = it)
-                }
+                }*/
 
             }
             else{
-                model.mediaFile?.let {
-                    loadPicture(url = it.absolutePath).value?.let {
-                        CircularImageViewDemo(bitmap = it)
-                    }
-                }
+                GlideImage(
+                    imageModel = model.mediaFile.absolutePath,
+                    // Crop, Fit, Inside, FillHeight, FillWidth, None
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.height(350.dp),
+                    requestOptions = {
+                        RequestOptions()
+                            .override(256, 256)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .centerCrop()
+                    },
+                )
 
             }
         }
@@ -96,23 +106,4 @@ fun downloadIconColor(isDownloaded: Boolean): Color{
     }
 }
 
-@Composable
-fun CircularImageViewDemo(bitmap: Bitmap) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            bitmap= bitmap.asImageBitmap(),
-            contentDescription = "avatar",
-            contentScale = ContentScale.Crop,
-            // crop the image if it's not a square
-            modifier = Modifier
-                .fillMaxWidth()
-                // add a border (optional)
-                .height(350.dp)
-                .border(width = 1.dp, color = Color.White)
-        )
-    }
-}
+
