@@ -1,9 +1,12 @@
 package com.cosmosrsvp.statussaver.ui.Fragments.ViewModel
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
 import com.cosmosrsvp.statussaver.domain.model.StatusModel
@@ -11,13 +14,15 @@ import com.cosmosrsvp.statussaver.util.enum.getAllImageExtensions
 import com.cosmosrsvp.statussaver.util.enum.getAllVideoFormats
 import java.io.File
 
+
 class fragment_MediaViewModel
     : ViewModel() {
 
     private val TAG= "statusFragmentViewModel"
     val isPermissionGranted: MutableState<Boolean> = mutableStateOf(false)
     val mediaFileListInWhatsAppDir: MutableState<List<StatusModel>> = mutableStateOf(listOf())
-    val mediaFileListInAppDir: MutableState<List<DownloadedStatusModel>> = mutableStateOf(listOf())
+    val mediaFileListInAppDir: MutableState<MutableList<DownloadedStatusModel>> = mutableStateOf(
+        mutableListOf())
     private val storageDir: File=Environment.getExternalStorageDirectory()
     private val appDir: File= File(storageDir, "Status_Saver_With_Video_Downloader")
     init {
@@ -107,20 +112,39 @@ class fragment_MediaViewModel
         return false
     }
 
-    fun onDownlaodButtonClicked(file: File){
+    fun onDownloadButtonClicked(file: File){
         val targetFile= File(appDir, file.name)
         file.copyTo(targetFile)
         refreshAppMediaFileList()
         refreshWhatsAppMediaFilelist()
     }
 
-    fun onShareButtonClicked(file: File){
+    fun onShareButtonClicked(uri: Uri): Intent{
+        val waIntent= Intent(Intent.ACTION_SEND)
+        waIntent.setType("image/jpg")
+        waIntent.putExtra(Intent.EXTRA_STREAM,uri)
+        return  waIntent
+    }
+
+    fun onWhatsAppShareButtonClicked(uri: Uri): Intent{
+        val waIntent= Intent(Intent.ACTION_SEND)
+        waIntent.setType("image/jpg")
+        waIntent.setPackage("com.whatsapp")
+        waIntent.putExtra(Intent.EXTRA_STREAM,uri)
+        return  waIntent
+    }
+
+    fun onDeleteButtonClicked(file: File){
+        try {
+            file.delete()
+        }
+        catch (e: Exception){
+
+        }
 
     }
 
-    fun onWhatsAppShareButtonClicked(file: File){
 
-    }
 
     fun List<DownloadedStatusModel>.hasFile(file: File): Boolean{
         for(content in this){
