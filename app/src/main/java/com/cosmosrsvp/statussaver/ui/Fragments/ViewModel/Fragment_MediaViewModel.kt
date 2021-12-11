@@ -7,11 +7,13 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
 import com.cosmosrsvp.statussaver.domain.model.StatusModel
 import com.cosmosrsvp.statussaver.util.enum.getAllImageExtensions
 import com.cosmosrsvp.statussaver.util.enum.getAllVideoFormats
+import com.google.android.exoplayer2.offline.Download
 import java.io.File
 
 
@@ -21,8 +23,9 @@ class fragment_MediaViewModel
     private val TAG= "statusFragmentViewModel"
     val isPermissionGranted: MutableState<Boolean> = mutableStateOf(false)
     val mediaFileListInWhatsAppDir: MutableState<List<StatusModel>> = mutableStateOf(listOf())
-    val mediaFileListInAppDir: MutableState<MutableList<DownloadedStatusModel>> = mutableStateOf(
-        mutableListOf())
+    val mediaFileListInAppDir: MutableLiveData<MutableList<DownloadedStatusModel>> by lazy {
+        MutableLiveData<MutableList<DownloadedStatusModel>>()
+    }
     private val storageDir: File=Environment.getExternalStorageDirectory()
     private val appDir: File= File(storageDir, "Status_Saver_With_Video_Downloader")
     init {
@@ -66,18 +69,22 @@ class fragment_MediaViewModel
             for (file in statusDirectoryFiles ){
                 var statusModel: StatusModel?=null
                 if (file.isImage()){
-                    statusModel= StatusModel(
-                                mediaFile = file,
-                                isVideo = false,
-                                isDownloaded = mediaFileListInAppDir.value.hasFile(File(appDir, file.name))
-                    )
+                    statusModel= mediaFileListInAppDir.value?.let {
+                        StatusModel(
+                            mediaFile = file,
+                            isVideo = false,
+                            isDownloaded = it.hasFile(File(appDir, file.name))
+                        )
+                    }
                 }
                 else if (file.isVideo()){
-                    statusModel= StatusModel(
-                        mediaFile = file,
-                        isVideo = true,
-                        isDownloaded = mediaFileListInAppDir.value.hasFile(File(appDir, file.name))
-                    )
+                    statusModel= mediaFileListInAppDir.value?.let {
+                        StatusModel(
+                            mediaFile = file,
+                            isVideo = true,
+                            isDownloaded = it.hasFile(File(appDir, file.name))
+                        )
+                    }
                 }
                 statusModel?.let {
                     tempList.add(statusModel)

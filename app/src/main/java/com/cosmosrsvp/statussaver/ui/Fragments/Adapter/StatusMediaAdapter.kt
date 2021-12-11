@@ -1,6 +1,7 @@
 package com.cosmosrsvp.statussaver.ui.Fragments.Adapter
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.cosmosrsvp.statussaver.R
 import com.cosmosrsvp.statussaver.domain.model.StatusModel
+import com.cosmosrsvp.statussaver.ui.Activities.ShowImage.ViewImageActivity
 import java.io.File
 
 class StatusMediaAdapter
@@ -22,7 +24,8 @@ class StatusMediaAdapter
         val onWhatsAppShareButtonClcked: (file: File)-> Unit
     )
     : MediaAdapter(context = context) {
-
+    val LIST_NAME="dLoadMedFiLst"
+    val CURRENT_POSITION="currentPosi"
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         val model: StatusModel = StatusModels.get(position)
@@ -41,6 +44,14 @@ class StatusMediaAdapter
         }
         holder.whatsapp_share_button.setOnClickListener {
             onWhatsAppShareButtonClcked(model.mediaFile)
+        }
+        holder.itemView.setOnClickListener{
+            val intent= Intent(context, ViewImageActivity::class.java)
+            intent.putStringArrayListExtra(LIST_NAME,StatusModels.map {
+                it.mediaFile.absolutePath
+            } as ArrayList<String>)
+            intent.putExtra(CURRENT_POSITION,position)
+            context.startActivity(intent)
         }
     }
 

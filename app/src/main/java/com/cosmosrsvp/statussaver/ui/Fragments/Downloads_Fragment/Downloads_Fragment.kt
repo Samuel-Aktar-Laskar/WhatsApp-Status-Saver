@@ -1,6 +1,7 @@
 package com.cosmosrsvp.statussaver.ui.Fragments.Downloads_Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +12,19 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cosmosrsvp.statussaver.R
+import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
+import com.cosmosrsvp.statussaver.domain.model.StatusModel
 import com.cosmosrsvp.statussaver.ui.Fragments.Adapter.DownloadsMediaAdapter
 import com.cosmosrsvp.statussaver.ui.Fragments.ViewModel.fragment_MediaViewModel
 import com.google.android.material.snackbar.Snackbar
-
-
+import kotlinx.coroutines.*
+import javax.net.ssl.SSLEngineResult
 
 
 class Downloads_Fragment: Fragment() {
     val TAG: String= "downloadFragmentTag"
     val viewModel: fragment_MediaViewModel by activityViewModels()
+    var StatusList: ArrayList<DownloadedStatusModel> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,9 +32,17 @@ class Downloads_Fragment: Fragment() {
     ): View {
         val view: View =inflater.inflate(R.layout.download_fragment, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.download_recycler_view)
+        viewModel.mediaFileListInAppDir.observe(requireActivity(),{
+            var i=0
+            for(o in it){
+                StatusList.add(i++,o)
+            }
+            Log.d(TAG, "Observer called!, status list: $StatusList")
+        })
+
         val adapter = DownloadsMediaAdapter(
             context=requireContext(),
-            DownloadedStatusModels = viewModel.mediaFileListInAppDir.value,
+            DownloadedStatusModels = StatusList,
             onShareButtonClicked = {
                 val uri = FileProvider.getUriForFile(
                     requireContext(),
@@ -50,6 +62,7 @@ class Downloads_Fragment: Fragment() {
                 startActivity(waIntent)
             },
             onDeleteButtonClicked = {file, adap->
+                var undo=false
                 val snackbar = Snackbar
                     .make(view, "Status is deleted", Snackbar.LENGTH_LONG)
                     .setAction("UNDO") {
@@ -61,11 +74,19 @@ class Downloads_Fragment: Fragment() {
                         snackbar1.show()
                         viewModel.refreshAppMediaFileList()
                         adap.notifyDataSetChanged()
+                        undo = true
                     }
-                viewModel.refreshAppMediaFileList()
-
                 snackbar.show()
-                false
+                GlobalScope.launch {
+                    delay(5000)
+                    if (!undo){
+                        viewModel.onDeleteButtonClicked(file)
+                        withContext(Dispatchers.Main){
+                            viewModel.refreshAppMediaFileList()
+                        }
+                    }
+                }
+
             }
         )
         recyclerView.layoutManager= GridLayoutManager(requireContext(), 2)
