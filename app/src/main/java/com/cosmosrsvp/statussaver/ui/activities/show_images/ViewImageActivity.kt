@@ -18,24 +18,25 @@ class ViewImageActivity: AppCompatActivity() {
     private val CURRENT_POSITION="currentPosi"
     private lateinit var viewPager: ViewPager2
     private val TAG = "viewImgaeActivity"
+    private lateinit var player: ExoPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_view_image)
 
         if (intent.hasExtra(LIST_NAME) || intent.hasExtra(CURRENT_POSITION)){
             viewPager=findViewById(R.id.pager)
             val FilePathList=intent.getStringArrayListExtra(LIST_NAME)
-            if (FilePathList==null){
-                super.onBackPressed()
-            }
+            if (FilePathList==null) super.onBackPressed()
+
             val FileList: ArrayList<File> = FilePathList?.map{
                 File(it)
             } as ArrayList<File>
-            val player: ExoPlayer=ExoPlayer.Builder(this).build()
+
+            player=ExoPlayer.Builder(this).build()
             player.playWhenReady=true
             val pagerAdapter=ViewPagerAdapter(
                 this,
@@ -45,8 +46,8 @@ class ViewImageActivity: AppCompatActivity() {
             viewPager.adapter=pagerAdapter
             viewPager.currentItem=intent.getIntExtra(CURRENT_POSITION,0)
 
-            var currentPosition=0;
-            viewPager?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            var currentPosition=-1
+            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                         Log.d(TAG, "Page position: $position")
@@ -66,6 +67,7 @@ class ViewImageActivity: AppCompatActivity() {
                     if (currentPosition!=position){
                         val file=FileList[position]
                         player.stop()
+
                         if (file.isVideo()){
                             val uri: Uri = Uri.fromFile(file)
                             val mediaItem: MediaItem = MediaItem.fromUri(uri)
@@ -73,11 +75,21 @@ class ViewImageActivity: AppCompatActivity() {
                             player.playWhenReady=true
                             player.prepare()
                         }
-                        //  playerView.player=player
+                        // playerView.player=player
                     }
                         currentPosition=position
                 }
             })
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        player.stop()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        player.release()
     }
 }
