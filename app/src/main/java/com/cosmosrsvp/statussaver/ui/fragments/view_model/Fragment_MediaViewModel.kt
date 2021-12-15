@@ -8,6 +8,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cosmosrsvp.statussaver.domain.extensions.onDownloadButtonClicked
 import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
 import com.cosmosrsvp.statussaver.domain.model.StatusModel
 import com.cosmosrsvp.statussaver.util.enum.getAllImageExtensions
@@ -20,7 +21,9 @@ class fragment_MediaViewModel
 
     private val TAG= "statusFragmentViewModel"
     val isPermissionGranted: MutableState<Boolean> = mutableStateOf(false)
-    val mediaFileListInWhatsAppDir: MutableState<List<StatusModel>> = mutableStateOf(listOf())
+    val mediaFileListInWhatsAppDir: MutableLiveData<MutableList<StatusModel>> by lazy {
+        MutableLiveData<MutableList<StatusModel>>()
+    }
     val mediaFileListInAppDir: MutableLiveData<MutableList<DownloadedStatusModel>> by lazy {
         MutableLiveData<MutableList<DownloadedStatusModel>>()
     }
@@ -118,36 +121,15 @@ class fragment_MediaViewModel
     }
 
     fun onDownloadButtonClicked(file: File){
-        val targetFile= File(appDir, file.name)
-        file.copyTo(targetFile)
+        file.onDownloadButtonClicked()
         refreshAppMediaFileList()
         refreshWhatsAppMediaFilelist()
     }
 
-    fun onShareButtonClicked(uri: Uri): Intent{
-        val waIntent= Intent(Intent.ACTION_SEND)
-        waIntent.setType("image/jpg")
-        waIntent.putExtra(Intent.EXTRA_STREAM,uri)
-        return  waIntent
-    }
 
-    fun onWhatsAppShareButtonClicked(uri: Uri): Intent{
-        val waIntent= Intent(Intent.ACTION_SEND)
-        waIntent.setType("image/jpg")
-        waIntent.setPackage("com.whatsapp")
-        waIntent.putExtra(Intent.EXTRA_STREAM,uri)
-        return  waIntent
-    }
 
-    fun onDeleteButtonClicked(file: File){
-        try {
-            file.delete()
-        }
-        catch (e: Exception){
 
-        }
 
-    }
 
 
 

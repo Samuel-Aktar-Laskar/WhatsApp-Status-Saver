@@ -11,6 +11,7 @@ import com.cosmosrsvp.statussaver.domain.model.StatusModel
 import com.cosmosrsvp.statussaver.ui.activities.show_images.ViewImageActivity
 import java.io.File
 
+private const val IS_DOWNLOADS="isFromDownloads"
 class StatusMediaAdapter
     constructor(
         context: Context,
@@ -47,6 +48,7 @@ class StatusMediaAdapter
                 it.mediaFile.absolutePath
             } as ArrayList<String>)
             intent.putExtra(CURRENT_POSITION,position)
+            intent.putExtra(IS_DOWNLOADS, false)
             context.startActivity(intent)
         }
     }

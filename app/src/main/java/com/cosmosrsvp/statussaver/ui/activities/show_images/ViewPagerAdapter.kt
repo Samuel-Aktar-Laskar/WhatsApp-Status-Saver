@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.cosmosrsvp.statussaver.R
-import com.cosmosrsvp.statussaver.domain.util.isVideo
+import com.cosmosrsvp.statussaver.domain.extensions.isVideo
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.google.android.exoplayer2.ExoPlayer

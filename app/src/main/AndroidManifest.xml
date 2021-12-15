@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StatusSaver">
         <activity
+            android:name=".ui.activities.VideoDownloader"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.show_images.ViewImageActivity"
             android:exported="false" />
 

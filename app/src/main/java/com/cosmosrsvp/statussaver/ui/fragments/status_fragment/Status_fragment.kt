@@ -6,23 +6,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.cosmosrsvp.statussaver.R
+import com.cosmosrsvp.statussaver.domain.extensions.onShareButtonClicked
+import com.cosmosrsvp.statussaver.domain.extensions.onWhatsAppShareButtonClicked
+import com.cosmosrsvp.statussaver.domain.extensions.sortList
+import com.cosmosrsvp.statussaver.domain.model.StatusModel
+import com.cosmosrsvp.statussaver.domain.util.toast
 import com.cosmosrsvp.statussaver.ui.fragments.adapter.StatusMediaAdapter
 import com.cosmosrsvp.statussaver.ui.fragments.view_model.fragment_MediaViewModel
 
 class Status_fragment : Fragment() {
     val TAG: String= "StatusFragmentTag"
     val viewModel: fragment_MediaViewModel by activityViewModels()
-    @OptIn(ExperimentalFoundationApi::class)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,9 +53,12 @@ class Status_fragment : Fragment() {
 
         val view: View=inflater.inflate(R.layout.status_fragmnent, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.status_recycler_view)
+        val swipeRefreshLayout: SwipeRefreshLayout = view.findViewById(R.id.refreshStatuses)
+        val mainList: ArrayList<StatusModel> = arrayListOf()
+
         val adapter = StatusMediaAdapter(
             context=requireContext(),
-            StatusModels = viewModel.mediaFileListInWhatsAppDir.value,
+            StatusModels = mainList,
             onDownloadButtonClicked = {
                 viewModel.onDownloadButtonClicked(it)
             },
@@ -60,7 +68,7 @@ class Status_fragment : Fragment() {
                     requireActivity().getPackageName().toString() + ".provider",
                     it
                 )
-                val waIntent= viewModel.onShareButtonClicked(uri)
+                val waIntent= uri.onShareButtonClicked()
                 startActivity(waIntent)
             },
             onWhatsAppShareButtonClcked = {
@@ -69,22 +77,36 @@ class Status_fragment : Fragment() {
                     requireActivity().getPackageName().toString() + ".provider",
                     it
                 )
-                val waIntent=viewModel.onWhatsAppShareButtonClicked(uri)
+                val waIntent=uri.onWhatsAppShareButtonClicked()
                 startActivity(waIntent)
             }
             )
+        viewModel.mediaFileListInWhatsAppDir.observe(this){
+            var i=0
+            for(o in it){
+                if (mainList.size>i)
+                    mainList.set(i++,o)
+                else mainList.add(o)
+            }
+            mainList.sortList()
+            adapter.notifyDataSetChanged()
+        }
         recyclerView.layoutManager= GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = adapter
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshWhatsAppMediaFilelist()
+            swipeRefreshLayout.isRefreshing=false
+        }
         return view
     }
-    val requestPermissionLauncher =
+    private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
                 viewModel.isPermissionGranted.value=true
             } else {
-                Toast.makeText(requireContext(), "The app needs this permission to function", Toast.LENGTH_LONG).show()
+                toast(requireContext(),"The app needs this permission to function", true)
             }
         }
 }
