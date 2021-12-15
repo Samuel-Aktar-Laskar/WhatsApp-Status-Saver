@@ -1,4 +1,4 @@
-package com.cosmosrsvp.statussaver.ui.Fragments.Downloads_Fragment
+package com.cosmosrsvp.statussaver.ui.fragments.downloads_fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -8,17 +8,14 @@ import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cosmosrsvp.statussaver.R
 import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
-import com.cosmosrsvp.statussaver.domain.model.StatusModel
-import com.cosmosrsvp.statussaver.ui.Fragments.Adapter.DownloadsMediaAdapter
-import com.cosmosrsvp.statussaver.ui.Fragments.ViewModel.fragment_MediaViewModel
+import com.cosmosrsvp.statussaver.ui.fragments.adapter.DownloadsMediaAdapter
+import com.cosmosrsvp.statussaver.ui.fragments.view_model.fragment_MediaViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import javax.net.ssl.SSLEngineResult
 
 
 class Downloads_Fragment: Fragment() {

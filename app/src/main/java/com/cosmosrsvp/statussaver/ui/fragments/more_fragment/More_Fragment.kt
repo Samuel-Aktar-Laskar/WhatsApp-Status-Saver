@@ -1,4 +1,4 @@
-package com.cosmosrsvp.statussaver.ui.Fragments.More_Fragment
+package com.cosmosrsvp.statussaver.ui.fragments.more_fragment
 
 import androidx.fragment.app.Fragment
 

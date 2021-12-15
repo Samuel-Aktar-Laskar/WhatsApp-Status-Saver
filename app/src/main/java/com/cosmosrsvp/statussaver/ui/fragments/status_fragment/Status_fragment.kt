@@ -1,4 +1,4 @@
-package com.cosmosrsvp.statussaver.ui.Fragments.Status_Fragment
+package com.cosmosrsvp.statussaver.ui.fragments.status_fragment
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -13,12 +13,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cosmosrsvp.statussaver.R
-import com.cosmosrsvp.statussaver.ui.Fragments.Adapter.StatusMediaAdapter
-import com.cosmosrsvp.statussaver.ui.Fragments.ViewModel.fragment_MediaViewModel
+import com.cosmosrsvp.statussaver.ui.fragments.adapter.StatusMediaAdapter
+import com.cosmosrsvp.statussaver.ui.fragments.view_model.fragment_MediaViewModel
 
 class Status_fragment : Fragment() {
     val TAG: String= "StatusFragmentTag"

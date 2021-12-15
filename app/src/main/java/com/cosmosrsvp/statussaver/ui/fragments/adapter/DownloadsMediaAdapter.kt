@@ -1,4 +1,4 @@
-package com.cosmosrsvp.statussaver.ui.Fragments.Adapter
+package com.cosmosrsvp.statussaver.ui.fragments.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,7 @@ import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
-import com.cosmosrsvp.statussaver.domain.model.StatusModel
-import com.cosmosrsvp.statussaver.ui.Activities.ShowImage.ViewImageActivity
+import com.cosmosrsvp.statussaver.ui.activities.show_images.ViewImageActivity
 import java.io.File
 
 class DownloadsMediaAdapter

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/status_fragment"
-        android:name="com.cosmosrsvp.statussaver.ui.Fragments.Status_Fragment.Status_fragment"
+        android:name="com.cosmosrsvp.statussaver.ui.fragments.status_fragment.Status_fragment"
         android:label="Status_fragment" >
         <action
             android:id="@+id/action_status_fragment_to_downloads_Fragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/downloads_Fragment"
-        android:name="com.cosmosrsvp.statussaver.ui.Fragments.Downloads_Fragment.Downloads_Fragment"
+        android:name="com.cosmosrsvp.statussaver.ui.fragments.downloads_fragment.Downloads_Fragment"
         android:label="Downloads_Fragment" >
         <action
             android:id="@+id/action_downloads_Fragment_to_more_Fragment"
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/more_Fragment"
-        android:name="com.cosmosrsvp.statussaver.ui.Fragments.More_Fragment.More_Fragment"
+        android:name="com.cosmosrsvp.statussaver.ui.fragments.more_fragment.More_Fragment"
         android:label="More_Fragment" >
         <action
             android:id="@+id/action_more_Fragment_to_status_fragment"

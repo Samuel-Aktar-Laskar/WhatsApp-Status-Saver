@@ -1,4 +1,4 @@
-package com.cosmosrsvp.statussaver.ui.Fragments.ViewModel
+package com.cosmosrsvp.statussaver.ui.fragments.view_model
 
 import android.content.Intent
 import android.net.Uri
@@ -6,14 +6,12 @@ import android.os.Environment
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
 import com.cosmosrsvp.statussaver.domain.model.StatusModel
 import com.cosmosrsvp.statussaver.util.enum.getAllImageExtensions
 import com.cosmosrsvp.statussaver.util.enum.getAllVideoFormats
-import com.google.android.exoplayer2.offline.Download
 import java.io.File
 
 

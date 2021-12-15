@@ -1,18 +1,14 @@
-package com.cosmosrsvp.statussaver.ui.Fragments.Adapter
+package com.cosmosrsvp.statussaver.ui.fragments.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageButton
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.cosmosrsvp.statussaver.R
 import com.cosmosrsvp.statussaver.domain.model.StatusModel
-import com.cosmosrsvp.statussaver.ui.Activities.ShowImage.ViewImageActivity
+import com.cosmosrsvp.statussaver.ui.activities.show_images.ViewImageActivity
 import java.io.File
 
 class StatusMediaAdapter

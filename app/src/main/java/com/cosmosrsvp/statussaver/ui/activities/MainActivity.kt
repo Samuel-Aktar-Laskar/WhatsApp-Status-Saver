@@ -1,23 +1,11 @@
-package com.cosmosrsvp.statussaver.ui.Activities
+package com.cosmosrsvp.statussaver.ui.activities
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.findNavController
 import com.cosmosrsvp.statussaver.R
-import com.cosmosrsvp.statussaver.ui.Fragments.Downloads_Fragment.Downloads_Fragment
-import com.cosmosrsvp.statussaver.ui.Fragments.More_Fragment.More_Fragment
-import com.cosmosrsvp.statussaver.ui.Fragments.Status_Fragment.Status_fragment
-import com.cosmosrsvp.statussaver.ui.theme.StatusSaverTheme
+import com.cosmosrsvp.statussaver.ui.fragments.downloads_fragment.Downloads_Fragment
+import com.cosmosrsvp.statussaver.ui.fragments.more_fragment.More_Fragment
+import com.cosmosrsvp.statussaver.ui.fragments.status_fragment.Status_fragment
 import com.google.android.material.tabs.TabLayout
 
 

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StatusSaver">
         <activity
-            android:name=".ui.Activities.ShowImage.ViewImageActivity"
+            android:name=".ui.activities.show_images.ViewImageActivity"
             android:exported="false" />
 
         <provider
@@ -28,7 +28,7 @@
         </provider>
 
         <activity
-            android:name=".ui.Activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.StatusSaver.NoActionBar">
