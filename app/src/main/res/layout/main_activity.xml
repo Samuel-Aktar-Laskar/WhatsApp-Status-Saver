@@ -30,36 +30,17 @@
         android:layout_height="50dp"
         android:background="#117700"
         android:id="@+id/tabLayout"
-        app:tabTextColor="@color/white"
+        app:tabMode="fixed"
         app:layout_constraintTop_toBottomOf="@+id/title"
+        style="@style/Widget.MaterialComponents.TabLayout.PrimarySurface"
         >
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="STATUS"
-            android:id="@+id/status"
-            />
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DOWLOADS"
-            />
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MORE"
-            />
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="130dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
+        android:id="@+id/fragment_navigation_viewpager"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
