@@ -11,18 +11,14 @@ import com.cosmosrsvp.statussaver.R
 import com.cosmosrsvp.statussaver.domain.extensions.isVideo
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ui.StyledPlayerView
 import java.io.File
-import java.lang.Exception
 
 private const val TAG = "viewpageradapter"
 
 class ViewPagerAdapter
 constructor(
     private val context: Context,
-    private val fileList: ArrayList<File>,
-    private val player: ExoPlayer,
+    private val fileList: ArrayList<File>
     ): RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>(){
 
     override fun getItemCount(): Int {
@@ -44,9 +40,9 @@ constructor(
         holder.frameLayout.removeAllViews()
         if (file.isVideo()){
             try {
-                val playerView2=StyledPlayerView(context)
-                playerView2.player=player
-                holder.frameLayout.addView(playerView2)
+               // val playerView2=StyledPlayerView(context)
+               // playerView.player=player
+               // holder.frameLayout.addView(playerView)
             }
             catch (e: Exception){
                 Log.d(TAG, "Error in loading video: ${e.localizedMessage}")
