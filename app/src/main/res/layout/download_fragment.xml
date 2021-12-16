@@ -22,10 +22,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="10sp"
-        android:id="@+id/downloadVideo"
+        android:id="@+id/downloadVideoFab"
         android:backgroundTint="#065f55"
         android:src="@drawable/ic_down_arrow"
-        android:onClick="FloatingButtonClicked"
         />
 
 

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,11 +22,12 @@ import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
 import com.cosmosrsvp.statussaver.ui.activities.VideoDownloader
 import com.cosmosrsvp.statussaver.ui.fragments.adapter.DownloadsMediaAdapter
 import com.cosmosrsvp.statussaver.ui.fragments.view_model.fragment_MediaViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
 
-class Downloads_Fragment: Fragment() {
+class Downloads_Fragment: Fragment(), View.OnClickListener {
     val TAG: String= "downloadFragmentTag"
     private val viewModel: fragment_MediaViewModel by activityViewModels()
     private var StatusList: ArrayList<DownloadedStatusModel> = ArrayList()
@@ -37,6 +39,9 @@ class Downloads_Fragment: Fragment() {
         val view: View =inflater.inflate(R.layout.download_fragment, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.download_recycler_view)
         val swipeRefreshLayout: SwipeRefreshLayout= view.findViewById(R.id.refreshDownloads)
+        val downloadBtn: FloatingActionButton=view.findViewById(R.id.downloadVideoFab)
+        downloadBtn.setOnClickListener(this)
+
 
 
         val adapter = DownloadsMediaAdapter(
@@ -108,8 +113,17 @@ class Downloads_Fragment: Fragment() {
         return view
     }
 
-    fun FloatingButtonClicked(view: View){
-        startActivity(Intent(requireContext(),VideoDownloader::class.java))
+
+
+    override fun onClick(p0: View?) {
+        p0?.let {
+            when  (it.id){
+                R.id.downloadVideoFab->{
+                    startActivity(Intent(requireContext(),VideoDownloader::class.java))
+
+                }
+            }
+        }
     }
 
 
