@@ -16,7 +16,13 @@
         android:theme="@style/Theme.StatusSaver">
         <activity
             android:name=".ui.activities.VideoDownloader"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activities.show_images.ViewImageActivity"
             android:exported="false" />

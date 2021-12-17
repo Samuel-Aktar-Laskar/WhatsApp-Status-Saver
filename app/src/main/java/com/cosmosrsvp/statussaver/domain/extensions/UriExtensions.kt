@@ -17,3 +17,4 @@ fun Uri.onWhatsAppShareButtonClicked(): Intent {
     waIntent.putExtra(Intent.EXTRA_STREAM,this)
     return  waIntent
 }
+

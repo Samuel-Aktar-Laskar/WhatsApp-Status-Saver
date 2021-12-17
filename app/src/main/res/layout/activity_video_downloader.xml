@@ -5,39 +5,120 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.VideoDownloader">
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shorts Downloader"
-        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="sans-serif-medium"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"/>
-    <com.google.android.material.textfield.TextInputEditText
+        app:title="Video Downloader"
+        android:id="@+id/toolbar_video_downloader"
+        android:background="#065f55"
+        app:titleTextColor="@color/white"
+        />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:hint="Enter video URL"
+        android:layout_marginHorizontal="10dp"
+        android:maxHeight="500dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_video_downloader"
+        android:id="@+id/vid_thumbnail"
+        />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/buttonPanel"
+        android:layout_marginHorizontal="10dp"
+        android:background="#46107C70"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/vid_thumbnail"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/whatsapp_share_button2"
+            android:src="@drawable/ic_whatsapp"
+            android:background="@drawable/bg_status_card_buttons"
+            android:padding="10dp"
+            android:tint="@color/black"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/share_button2"
+            android:src="@drawable/icon_share"
+            android:background="@drawable/bg_status_card_buttons"
+            android:padding="10dp"
+            android:tint="@color/black"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete_button2"
+            android:src="@drawable/ic_delete"
+            android:padding="10dp"
+            android:background="@drawable/bg_status_card_buttons"
+            android:tint="@color/black"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/url_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:id="@+id/url"
-        />
-    <Button
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Download"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/url"
-        android:layout_marginTop="20sp"
-        android:id="@+id/downloadVideo"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/buttonPanel"
+        app:boxCornerRadiusBottomEnd="0dp"
+        app:boxCornerRadiusBottomStart="0dp"
+        app:boxCornerRadiusTopEnd="0dp"
+        app:boxCornerRadiusTopStart="0dp"
+        >
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/url"
+            android:inputType="textUri"
+            android:hint="Enter Video Url" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/url_layout"
+        android:layout_marginTop="10dp"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="Download"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_download_btn"
+            android:layout_gravity="center"
+            android:id="@+id/downloadVideo"
+            />
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/quality_spinner"
+            android:background="@drawable/bg_spinner"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="How to download video?\n  1. Copy paste the video url and download. or\n  2. Click on share option and select this app."
+        android:background="#46107C70"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

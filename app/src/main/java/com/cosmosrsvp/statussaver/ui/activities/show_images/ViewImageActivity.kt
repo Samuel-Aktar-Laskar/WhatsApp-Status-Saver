@@ -178,7 +178,6 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
                         val waIntent=uri.onWhatsAppShareButtonClicked()
                         startActivity(waIntent)
                     }
-
                 }
                 R.id.share_button1->{
                     FileList.get(currentPosition).let {
