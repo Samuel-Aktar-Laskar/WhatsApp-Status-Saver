@@ -22,11 +22,11 @@ import com.cosmosrsvp.statussaver.domain.extensions.sortList
 import com.cosmosrsvp.statussaver.domain.model.StatusModel
 import com.cosmosrsvp.statussaver.domain.util.toast
 import com.cosmosrsvp.statussaver.ui.fragments.adapter.StatusMediaAdapter
-import com.cosmosrsvp.statussaver.ui.fragments.view_model.fragment_MediaViewModel
+import com.cosmosrsvp.statussaver.ui.fragments.view_model.FragmentMediaViewModel
 
 class Status_fragment : Fragment() {
     val TAG: String= "StatusFragmentTag"
-    val viewModel: fragment_MediaViewModel by activityViewModels()
+    val viewModel: FragmentMediaViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +46,12 @@ class Status_fragment : Fragment() {
             }
         }
 
-        if (!viewModel.isPermissionGranted.value)
-            requestPermissionLauncher.launch(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+        viewModel.isPermissionGranted.value?.let {
+            if (!it)
+                requestPermissionLauncher.launch(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+        }
 
         val view: View=inflater.inflate(R.layout.status_fragmnent, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.status_recycler_view)
@@ -94,7 +96,7 @@ class Status_fragment : Fragment() {
         recyclerView.layoutManager= GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = adapter
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshWhatsAppMediaFilelist()
+            viewModel.refreshWhatsAppMediaFileList()
             swipeRefreshLayout.isRefreshing=false
         }
         return view
@@ -105,6 +107,7 @@ class Status_fragment : Fragment() {
         ) { isGranted: Boolean ->
             if (isGranted) {
                 viewModel.isPermissionGranted.value=true
+                viewModel.initBlock()
             } else {
                 toast(requireContext(),"The app needs this permission to function", true)
             }

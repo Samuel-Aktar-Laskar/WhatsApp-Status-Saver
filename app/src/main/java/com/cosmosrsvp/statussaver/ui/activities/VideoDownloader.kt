@@ -131,7 +131,7 @@ class VideoDownloader : AppCompatActivity() , View.OnClickListener{
                                 }
                             val url="https://img.youtube.com/vi/${link.getMainId(VideoType.UTUBE_VIDEO)}/0.jpg"
                             Glide.with(this).load(url).into(vidThumbnail)
-                            toast(applicationContext, "Initializing download")
+                            toast(applicationContext, "Initializing download..Please wait")
                             downloadBtn.isEnabled=false
                         }
 

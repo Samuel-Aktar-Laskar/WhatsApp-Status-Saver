@@ -23,9 +23,10 @@
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="10sp"
         android:id="@+id/downloadVideoFab"
-        android:backgroundTint="#065f55"
-        android:src="@drawable/ic_down_arrow"
+        android:src="@drawable/outline_file_download_20"
+        app:maxImageSize="40dp"
+        app:backgroundTint="#D8D8D8"
+        app:fabSize="normal"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,7 +20,7 @@ import com.cosmosrsvp.statussaver.domain.extensions.sortList
 import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
 import com.cosmosrsvp.statussaver.ui.activities.VideoDownloader
 import com.cosmosrsvp.statussaver.ui.fragments.adapter.DownloadsMediaAdapter
-import com.cosmosrsvp.statussaver.ui.fragments.view_model.fragment_MediaViewModel
+import com.cosmosrsvp.statussaver.ui.fragments.view_model.FragmentMediaViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
@@ -29,7 +28,7 @@ import kotlinx.coroutines.*
 
 class Downloads_Fragment: Fragment(), View.OnClickListener {
     val TAG: String= "downloadFragmentTag"
-    private val viewModel: fragment_MediaViewModel by activityViewModels()
+    private val viewModel: FragmentMediaViewModel by activityViewModels()
     private var StatusList: ArrayList<DownloadedStatusModel> = ArrayList()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,12 +81,12 @@ class Downloads_Fragment: Fragment(), View.OnClickListener {
                     }
                 snackbar.show()
                 GlobalScope.launch {
-                    delay(5000)
+                    delay(2750)
                     if (!undo){
                         file.onDeleteButtonClicked()
-                        withContext(Dispatchers.Main){
+                        /*withContext(Dispatchers.Main){
                             viewModel.refreshAppMediaFileList()
-                        }
+                        }*/
                     }
                 }
             }
@@ -118,8 +117,7 @@ class Downloads_Fragment: Fragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         p0?.let {
             when  (it.id){
-                R.id.downloadVideoFab->{
-                    startActivity(Intent(requireContext(),VideoDownloader::class.java))
+                R.id.downloadVideoFab->{                    startActivity(Intent(requireContext(),VideoDownloader::class.java))
 
                 }
             }

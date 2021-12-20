@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.OpeningActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_app_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/titleText"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Welcome to Status Saver with Video Downloader"
+        android:textSize="20sp"
+        android:textScaleX="0.8"
+        android:textStyle="bold"
+        android:id="@+id/titleText"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText"
+        android:text="This permission allows the App to read and write to your device storage for receiving and sharing files"
+        android:textSize="15sp"
+        android:textScaleX="0.8"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="10dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/description"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20sp"
+        android:text="Grant Permission"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:id="@+id/permissionButton"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

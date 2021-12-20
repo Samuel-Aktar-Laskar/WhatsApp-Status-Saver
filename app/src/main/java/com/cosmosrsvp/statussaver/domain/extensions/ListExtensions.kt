@@ -2,7 +2,13 @@ package com.cosmosrsvp.statussaver.domain.extensions
 
 import android.os.Build
 import android.util.Log
+import com.cosmosrsvp.statussaver.domain.model.DownloadedStatusModel
 import com.cosmosrsvp.statussaver.domain.model.MainModel
+import com.cosmosrsvp.statussaver.domain.model.StatusModel
+import com.cosmosrsvp.statussaver.util.EXISTS
+import com.cosmosrsvp.statussaver.util.NONEXISTENT
+import com.cosmosrsvp.statussaver.util.enum.StatusModelType
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.attribute.BasicFileAttributeView
 
@@ -27,4 +33,27 @@ fun  <T: MainModel> ArrayList<T>.sortList(){
             Log.d(TAG,"Error in sorting file: ${e.localizedMessage}")
         }
 }
+
+fun <T: MainModel> MutableList<T>.hasFile(file: File): Boolean{
+    for(content in this){
+        if (content.mediaFile == file)
+            return true
+    }
+    return false
+}
+
+fun MutableList<StatusModel>.hasModel(RModel: StatusModel): Int{
+
+    for (i in 0 until this.size){
+        val model=this[i]
+        if (model.mediaFile == RModel.mediaFile){
+            if (model.isDownloaded != RModel.isDownloaded )
+                return i // Edited
+            else return EXISTS
+        }
+    }
+    return NONEXISTENT
+}
+
+
 
