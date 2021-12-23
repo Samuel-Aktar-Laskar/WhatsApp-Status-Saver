@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.storage.StorageManager
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -21,15 +22,13 @@ import com.cosmosrsvp.statussaver.util.URI_PATH
 import com.cosmosrsvp.statussaver.util.whatsAppDir2
 import com.google.android.material.button.MaterialButton
 
+private const val TAG="OpeningActivity"
 class OpeningActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_opening)
         findViewById<MaterialButton>(R.id.permissionButton).setOnClickListener(this)
-        if (CheckPermissions()){
-            startMainActivity()
-        }
     }
 
     override fun onClick(p0: View?) {
@@ -52,19 +51,7 @@ class OpeningActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun CheckPermissions(): Boolean{
-        var b2 = true
-        var b1: Boolean = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && whatsAppDir2.exists()) {
-            val uri: String?= getSharedPreferences(TREE_URI, MODE_PRIVATE).getString(URI_PATH, null)
-            b2 = uri != null
-        }
-        return b1 && b2
-        }
 
 
     private val requestPermissionLauncher =
@@ -88,7 +75,7 @@ class OpeningActivity : AppCompatActivity(), View.OnClickListener {
         val storageManager = application.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         val intent =  storageManager.primaryStorageVolume.createOpenDocumentTreeIntent()
 
-        val targetDirectory = "WhatsApp%2FMedia%2F.Statuses" // add your directory to be selected by the user
+        val targetDirectory = "Android%2Fmedia%2Fcom.whatsapp%2FWhatsApp%2FMedia%2F.Statuses" // add your directory to be selected by the user
         var uri = intent.getParcelableExtra<Uri>("android.provider.extra.INITIAL_URI") as Uri
         var scheme = uri.toString()
         scheme = scheme.replace("/root/", "/document/")
@@ -109,6 +96,7 @@ class OpeningActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 }
                 val preferences=getSharedPreferences(TREE_URI, MODE_PRIVATE)
+                Log.d(TAG, "Uri got is :${treeUri.data}")
                 preferences.edit().putString(URI_PATH,treeUri.data.toString()).apply()
                 startMainActivity()
             }

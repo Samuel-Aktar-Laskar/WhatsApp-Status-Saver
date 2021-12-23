@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.cosmosrsvp.statussaver.ui.fragments.downloads_fragment.Downloads_Fragment
-import com.cosmosrsvp.statussaver.ui.fragments.more_fragment.More_Fragment
+import com.cosmosrsvp.statussaver.ui.fragments.more_fragment.MoreFragment
 import com.cosmosrsvp.statussaver.ui.fragments.status_fragment.Status_fragment
 
 private const val NUM_TABS=3
@@ -25,6 +25,6 @@ class FragmentNavViewPagerAdapter
             0-> return Status_fragment()
             1-> return Downloads_Fragment()
         }
-        return More_Fragment()
+        return MoreFragment()
     }
 }

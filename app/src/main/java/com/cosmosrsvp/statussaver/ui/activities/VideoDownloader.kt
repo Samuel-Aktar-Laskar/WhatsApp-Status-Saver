@@ -179,7 +179,7 @@ class VideoDownloader : AppCompatActivity() , View.OnClickListener{
                     fileReference.file?.let {
                         val uri = FileProvider.getUriForFile(
                             this,
-                            getPackageName().toString() + ".provider",
+                            packageName.toString() + ".provider",
                             it
                         )
                         val waIntent= uri.onShareButtonClicked()

@@ -1,7 +1,7 @@
 package com.cosmosrsvp.statussaver.ui.activities.show_images
 
 import android.content.Context
-import android.util.Log
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,18 +11,17 @@ import com.cosmosrsvp.statussaver.R
 import com.cosmosrsvp.statussaver.domain.extensions.isVideo
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-import java.io.File
 
-private const val TAG = "viewpageradapter"
+//private const val TAG = "viewPagerAdapter"
 
 class ViewPagerAdapter
 constructor(
     private val context: Context,
-    private val fileList: ArrayList<File>
+    private val uriList: ArrayList<Uri>
     ): RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>(){
 
     override fun getItemCount(): Int {
-        return fileList.size
+        return uriList.size
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,22 +34,12 @@ constructor(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val file: File= fileList[position]
+        val uri: Uri= uriList[position]
 
         holder.frameLayout.removeAllViews()
-        if (file.isVideo()){
-            try {
-               // val playerView2=StyledPlayerView(context)
-               // playerView.player=player
-               // holder.frameLayout.addView(playerView)
-            }
-            catch (e: Exception){
-                Log.d(TAG, "Error in loading video: ${e.localizedMessage}")
-            }
-        }
-        else {
+        if (!uri.isVideo()){
             val imageView2= SubsamplingScaleImageView(context)
-            imageView2.setImage(ImageSource.uri(file.absolutePath))
+            imageView2.setImage(ImageSource.uri(uri))
             holder.frameLayout.addView(imageView2)
         }
     }

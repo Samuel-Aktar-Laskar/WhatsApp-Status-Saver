@@ -8,7 +8,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.cosmosrsvp.statussaver.R
 import com.cosmosrsvp.statussaver.domain.extensions.*
@@ -17,12 +16,16 @@ import com.cosmosrsvp.statussaver.domain.util.toast
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.PlayerView
-import java.io.File
+import androidx.core.content.FileProvider
+
+
+
+
 
 
 private const val LIST_NAME="dLoadMedFiLst"
 private const val CURRENT_POSITION="currentPosi"
-private const val TAG = "viewImgaeActivity"
+private const val TAG = "viewImagesActivity"
 private const val IS_DOWNLOADS="isFromDownloads"
 
 class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
@@ -30,12 +33,12 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
     private lateinit var viewPager: ViewPager2
     private lateinit var player: ExoPlayer
     var currentPosition=-1
-    lateinit var FileList: ArrayList<File>
-    lateinit var  pagerAdapter : ViewPagerAdapter
-    lateinit var deleteBtn: ImageButton
-    lateinit var shareBtn: ImageButton
-    lateinit var whatsappBtn: ImageButton
-    lateinit var downloadBtn: ImageButton
+    lateinit var uriList: ArrayList<Uri>
+    private lateinit var  pagerAdapter : ViewPagerAdapter
+    private lateinit var deleteBtn: ImageButton
+    private lateinit var shareBtn: ImageButton
+    private lateinit var whatsappBtn: ImageButton
+    private lateinit var downloadBtn: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -46,7 +49,7 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
         whatsappBtn= findViewById(R.id.whatsapp_share_button1)
         shareBtn= findViewById(R.id.share_button1)
         deleteBtn= findViewById(R.id.delete_button1)
-        val playerView: PlayerView= findViewById(R.id.styledPlayerView)//playerview
+        val playerView: PlayerView= findViewById(R.id.styledPlayerView)//playerView
         downloadBtn.setOnClickListener(this)
         whatsappBtn.setOnClickListener(this)
         shareBtn.setOnClickListener(this)
@@ -68,15 +71,16 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
 
         if (intent.hasExtra(LIST_NAME) || intent.hasExtra(CURRENT_POSITION)){
             viewPager=findViewById(R.id.pager)
-            val FilePathList=intent.getStringArrayListExtra(LIST_NAME)
-            if (FilePathList==null) super.onBackPressed()
-           FileList = FilePathList?.map{
-                File(it)
-            } as ArrayList<File>
+            val fileUriList=intent.getStringArrayListExtra(LIST_NAME)
+            if (fileUriList==null) super.onBackPressed()
+           uriList = fileUriList?.map{
+               Log.d(TAG, "Received string is :${Uri.parse(it).path}")
+               Uri.parse(it)
+            } as ArrayList<Uri>
 
             pagerAdapter=ViewPagerAdapter(
                 context = this,
-                fileList = FileList
+                uriList = uriList
             )
             viewPager.adapter=pagerAdapter
             viewPager.currentItem=intent.getIntExtra(CURRENT_POSITION,0)
@@ -93,14 +97,14 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
                 override fun onSwipeTop() {
                     super.onSwipeTop()
                     isDownloads?.let {
-                        Visibility(false, it)
+                        toggleVisibility(false, it)
                     }
                     playerView.showController()
                 }
                 override fun onSwipeBottom() {
                     super.onSwipeBottom()
                     isDownloads?.let {
-                        Visibility(true, it)
+                        toggleVisibility(true, it)
                     }
                     playerView.hideController()
                 }
@@ -125,21 +129,25 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
                     Log.d(TAG, "On page scrolled: $positionOffset and page position: $position")
 
                     if (currentPosition!=position){
-                        val file=FileList[position]
+                        val uri=uriList[position]
                         player.stop()
-                        if (file.isVideo()){
+                        Log.d(TAG, "FIle name is $uri")
+                        if (uri.isVideo()){
+                            Log.d(TAG, "Video to be played")
                             playerView.visibility=View.VISIBLE
-                            val uri: Uri = Uri.fromFile(file)
                             val mediaItem: MediaItem = MediaItem.fromUri(uri)
                             player.setMediaItem(mediaItem)
                             player.playWhenReady=true
                             player.prepare()
                             isDownloads?.let {
-                                Visibility(false, it)
+                                toggleVisibility(false, it)
                             }
                         }
                         else {
                             playerView.visibility=View.GONE
+                            isDownloads?.let {
+                                toggleVisibility(true, it)
+                            }
                         }
                     }
                     currentPosition=position
@@ -163,45 +171,34 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
         if (p0 != null) {
             when (p0.id){
                 R.id.download_button1->{
-                    val b=FileList.get(currentPosition).onDownloadButtonClicked()
+                    val b= uriList[currentPosition].onDownloadButtonClicked(this)
                     if (!b)
                     toast(this,"File is already downloaded")
                     else toast(this,"Download successful")
                 }
                 R.id.whatsapp_share_button1->{
-                    FileList.get(currentPosition).let {
-                        val uri = FileProvider.getUriForFile(
-                            this,
-                            getPackageName().toString() + ".provider",
-                            it
-                            )
-                        val waIntent=uri.onWhatsAppShareButtonClicked()
+                    uriList[currentPosition].let {
+                        val waIntent=it.onWhatsAppShareButtonClicked(this) ?: return
                         startActivity(waIntent)
                     }
                 }
                 R.id.share_button1->{
-                    FileList.get(currentPosition).let {
-                        val uri = FileProvider.getUriForFile(
-                            this,
-                            getPackageName().toString() + ".provider",
-                            it
-                        )
-                        val waIntent= uri.onShareButtonClicked()
+                    uriList[currentPosition].let {
+                        val waIntent= it.onShareButtonClicked()
                         startActivity(waIntent)
                     }
                 }
                 R.id.delete_button1->{
-                    FileList.get(currentPosition).onDeleteButtonClicked()
+                    uriList[currentPosition].onDeleteButtonClicked(this)
                     toast(this, "Deleted")
                     pagerAdapter.notifyItemRemoved(currentPosition)
                     ++viewPager.currentItem
                 }
-
             }
         }
     }
 
-    fun Visibility(switch: Boolean, isDownloads: Boolean){
+    fun toggleVisibility(switch: Boolean, isDownloads: Boolean){
         val visibility= if (switch) View.VISIBLE else View.GONE
         shareBtn.visibility=visibility
         whatsappBtn.visibility=visibility
@@ -212,3 +209,5 @@ class ViewImageActivity: AppCompatActivity(), View.OnClickListener {
 
     }
 }
+
+

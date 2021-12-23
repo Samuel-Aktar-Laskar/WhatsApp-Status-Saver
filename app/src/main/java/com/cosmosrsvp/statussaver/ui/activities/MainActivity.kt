@@ -1,7 +1,7 @@
 package com.cosmosrsvp.statussaver.ui.activities
 
 
-import android.app.Activity
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -10,19 +10,7 @@ import com.cosmosrsvp.statussaver.R
 import com.cosmosrsvp.statussaver.ui.fragments.FragmentNavViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import android.content.Intent
-import android.net.Uri
 
-
-import androidx.activity.result.contract.ActivityResultContracts
-
-import android.content.Context
-import android.os.Build
-
-import android.os.storage.StorageManager
-import androidx.annotation.RequiresApi
-import com.cosmosrsvp.statussaver.util.TREE_URI
-import com.cosmosrsvp.statussaver.util.URI_PATH
 
 
 val tabTitles= arrayOf(
@@ -65,11 +53,8 @@ class MainActivity : AppCompatActivity() {
         touchSlopField.set(recyclerView, touchSlop*f)       // "8" was obtained experimentally
     }
 
-
-
-
-
 }
+
 
 
 

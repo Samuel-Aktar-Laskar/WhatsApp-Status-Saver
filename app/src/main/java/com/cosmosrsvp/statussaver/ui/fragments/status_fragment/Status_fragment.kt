@@ -3,6 +3,7 @@ package com.cosmosrsvp.statussaver.ui.fragments.status_fragment
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,33 +63,29 @@ class Status_fragment : Fragment() {
             context=requireContext(),
             StatusModels = mainList,
             onDownloadButtonClicked = {
-                viewModel.onDownloadButtonClicked(it)
+                viewModel.onDownloadButtonClicked(dFile = it, context= requireContext())
             },
             onShareButtonClicked = {
-                val uri = FileProvider.getUriForFile(
-                    requireContext(),
-                    requireActivity().getPackageName().toString() + ".provider",
-                    it
-                )
-                val waIntent= uri.onShareButtonClicked()
+                val waIntent= it.uri.onShareButtonClicked()
                 startActivity(waIntent)
             },
-            onWhatsAppShareButtonClcked = {
-                val uri = FileProvider.getUriForFile(
-                    requireContext(),
-                    requireActivity().getPackageName().toString() + ".provider",
-                    it
-                )
-                val waIntent=uri.onWhatsAppShareButtonClicked()
-                startActivity(waIntent)
+            onWhatsAppShareButtonClicked = { documentFile ->
+                val waIntent=documentFile.uri.onWhatsAppShareButtonClicked(requireContext())
+                waIntent?.let {
+                    startActivity(it) //Remember this
+                }
             }
             )
-        viewModel.mediaFileListInWhatsAppDir.observe(this){
+        viewModel.getModelsInWhatsAppDir().observe(this){
+            Log.d(TAG, "List changed, being observed..")
             var i=0
             for(o in it){
                 if (mainList.size>i)
-                    mainList.set(i++,o)
-                else mainList.add(o)
+                    mainList[i++] = o
+                else {
+                    mainList.add(o)
+                    i++
+                }
             }
             mainList.sortList()
             adapter.notifyDataSetChanged()

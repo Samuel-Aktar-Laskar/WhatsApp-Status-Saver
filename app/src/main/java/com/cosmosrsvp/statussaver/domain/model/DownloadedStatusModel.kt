@@ -1,8 +1,8 @@
 package com.cosmosrsvp.statussaver.domain.model
 
-import java.io.File
+import androidx.documentfile.provider.DocumentFile
 
 data class DownloadedStatusModel(
-    override val mediaFile: File,
+    override val mediaFile: DocumentFile,
     override val isVideo: Boolean,
 ): MainModel

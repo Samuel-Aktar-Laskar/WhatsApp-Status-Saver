@@ -8,6 +8,7 @@
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/bg_download_btn.xml" value="0.19166666666666668" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/bg_spinner.xml" value="0.13229166666666667" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/bg_status_card_buttons.xml" value="0.18055555555555555" />
+        <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/ic_app_icon.xml" value="0.16203703703703703" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/ic_delete.xml" value="0.18055555555555555" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/ic_down_arrow.xml" value="0.19814814814814816" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/ic_downloaded.xml" value="0.18055555555555555" />
@@ -17,6 +18,7 @@
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/icon_downloaded.xml" value="0.14166666666666666" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/icon_share.xml" value="0.18055555555555555" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/outline_file_download_20.xml" value="0.19814814814814816" />
+        <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/drawable/splash_background.xml" value="0.16203703703703703" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/activity_opening.xml" value="0.12635869565217392" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/activity_video_downloader.xml" value="0.25" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/activity_view_image.xml" value="0.16304347826086957" />
@@ -25,6 +27,7 @@
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/fragment_play_video.xml" value="0.16304347826086957" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/fragment_view_imge.xml" value="0.16304347826086957" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/main_activity.xml" value="0.25" />
+        <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/more_fragment.xml" value="0.12001811594202899" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/simple_spinner_item.xml" value="0.33" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/status_card.xml" value="0.18" />
         <entry key="..\:/AppRepositories/StatusSaver2/app/src/main/res/layout/status_fragmnent.xml" value="0.1480978260869565" />

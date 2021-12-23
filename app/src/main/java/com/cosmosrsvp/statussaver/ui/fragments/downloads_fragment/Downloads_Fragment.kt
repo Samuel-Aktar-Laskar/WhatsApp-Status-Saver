@@ -6,9 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,7 +25,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
-
 class Downloads_Fragment: Fragment(), View.OnClickListener {
     val TAG: String= "downloadFragmentTag"
     private val viewModel: FragmentMediaViewModel by activityViewModels()
@@ -40,29 +39,18 @@ class Downloads_Fragment: Fragment(), View.OnClickListener {
         val swipeRefreshLayout: SwipeRefreshLayout= view.findViewById(R.id.refreshDownloads)
         val downloadBtn: FloatingActionButton=view.findViewById(R.id.downloadVideoFab)
         downloadBtn.setOnClickListener(this)
-
-
-
         val adapter = DownloadsMediaAdapter(
             context=requireContext(),
             DownloadedStatusModels = StatusList,
             onShareButtonClicked = {
-                val uri = FileProvider.getUriForFile(
-                    requireContext(),
-                    requireActivity().getPackageName().toString() + ".provider",
-                    it
-                )
-                val waIntent= uri.onShareButtonClicked()
+                val waIntent= it.uri.onShareButtonClicked()
                 startActivity(waIntent)
             },
-            onWhatsAppShareButtonClcked = {
-                val uri = FileProvider.getUriForFile(
-                    requireContext(),
-                    requireActivity().getPackageName().toString() + ".provider",
-                    it
-                )
-                val waIntent=uri.onWhatsAppShareButtonClicked()
-                startActivity(waIntent)
+            onWhatsAppShareButtonClicked = { documentFile ->
+                val waIntent=documentFile.uri.onWhatsAppShareButtonClicked(requireContext())
+                waIntent?.let {
+                    startActivity(it)
+                }
             },
             onDeleteButtonClicked = {file, adap->
                 var undo=false
@@ -84,19 +72,22 @@ class Downloads_Fragment: Fragment(), View.OnClickListener {
                     delay(2750)
                     if (!undo){
                         file.onDeleteButtonClicked()
-                        /*withContext(Dispatchers.Main){
+                        withContext(Dispatchers.Main){
                             viewModel.refreshAppMediaFileList()
-                        }*/
+                        }
                     }
                 }
             }
         )
-        viewModel.mediaFileListInAppDir.observe(requireActivity(),{
+        viewModel.getModelsInDownloadsDir().observe(viewLifecycleOwner, Observer<MutableList<DownloadedStatusModel>>{
             var i=0
             for(o in it){
                 if (StatusList.size>i)
-                    StatusList.set(i++,o)
-                else StatusList.add(o)
+                    StatusList[i++] = o
+                else {
+                    StatusList.add(o)
+                    i++
+                }
             }
             StatusList.sortList()
             adapter.notifyDataSetChanged()
@@ -112,17 +103,13 @@ class Downloads_Fragment: Fragment(), View.OnClickListener {
         return view
     }
 
-
-
     override fun onClick(p0: View?) {
         p0?.let {
             when  (it.id){
-                R.id.downloadVideoFab->{                    startActivity(Intent(requireContext(),VideoDownloader::class.java))
-
+                R.id.downloadVideoFab->{
+                    startActivity(Intent(requireContext(),VideoDownloader::class.java))
                 }
             }
         }
     }
-
-
 }
